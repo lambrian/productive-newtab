@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-context="options-page">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="options.css">
+    <title class="i18n" data-msg="google_calendar_extension_name">Options</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="i18n" data-msg="google_calendar_extension_name">Google Calendar</h1>
+    </header>
+    <article>
+      <h2 class="i18n" data-msg="toolbar_icon">Toolbar Icon</h2>
+      <section>
+        <label><input class="option" type="checkbox" name="badge-text-shown">
+          <span class="i18n" data-msg="option_show_time_until_next_event"></span>
+        </label>
+        <label><input class="option" type="checkbox" name="time_until_next_includes_all_day_events">
+          <span class="i18n" data-msg="option_time_until_next_includes_all_day_events"></span>
+        </label>
+      </section>
+    </article>
+
+    <article>
+      <h2 class="i18n" data-msg="calendar_list_header">Calendars</h2>
+      <section id="calendar-list">
+      </section>
+    </article>
+
+    <article>
+      <!-- TODO(manas): i18n -->
+      <h2>Troubleshooting</h2>
+      <section>
+        <p>Having problems authorizing? Consult the <a href="https://github.com/manastungare/google-calendar-crx/wiki/Troubleshooting">troubleshooting guide</a>.</p>
+
+        <p>If you continue to run into a problem, please report it.</p>
+        <label><input class="option" type="checkbox" name="debug-enable-logs">
+          <span class="i18n" data-msg="debug_enable_logs"></span>
+        </label>
+        <p><button id="report-issue-button">Report an issue</button></p>
+        <div id="report-issue-steps">
+          Copy this debug information, add detailed steps on how to reproduce the problem, and attach a screenshot.
+          <p><textarea id="system-info" rows="25"></textarea></p>
+          <p>Then create a new issue and paste it at
+            <a href="https://github.com/manastungare/google-calendar-crx/issues">https://github.com/manastungare/google-calendar-crx/issues</a>.
+          </p>
+        </div>
+        </div>
+      </section>
+    </article>
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/moment+langs.min.js"></script>
+    <script src="utils.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
