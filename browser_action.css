@@ -4,7 +4,7 @@
 }
 
 body {
-  background: #e5e5e5;
+  background: #F2F2F2;
   font-size: 14px;
   height: 480px;
   overflow-y: scroll;
@@ -14,27 +14,28 @@ body {
   margin: 0;
 }
 
+#calendar-view
+{
+  position: absolute;
+  max-height: 100%;
+  overflow: scroll;
+  right: 4%;
+  top: 0;
+}
+
+#todoist-view
+{
+  position: absolute;
+  width: 70%;
+  height: 100%;
+  border: none;
+}
+
 textarea {
   border: 1px solid #ccc;
   font-size: 15px;
   outline: none;
   padding: 4px;
-}
-
-header {
-  height: 48px;
-  background: #0086f4;
-  padding: 12px;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-.header-placeholder {
-  height: 48px;
 }
 
 .fab {
@@ -94,6 +95,7 @@ header {
 
 section {
   padding: 0 8px;
+  width: 300px;
 }
 
 #error {
