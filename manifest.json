@@ -60,6 +60,10 @@
      "default_popup": "browser_action.html"
   },
 
+  "chrome_url_overrides" : {
+    "newtab": "browser_action.html"
+  },
+
   "content_scripts": [
     {
       "matches": [
