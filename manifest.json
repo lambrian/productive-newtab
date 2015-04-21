@@ -2,7 +2,7 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
   "manifest_version": 2,
-  "name": "__MSG_google_calendar_extension_name__",
+  "name": "Productive New Tab",
   "description": "__MSG_google_calendar_extension_desc__",
   "version": "2.1",
   "default_locale": "en",
