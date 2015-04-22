@@ -122,6 +122,10 @@ browseraction.installButtonClickHandlers_ = function() {
     $('#quick-add-event-title').focus();
   });
 
+  $('#hide_calendar').on('click', function() {
+    $('#calendar-events').toggle();
+  });
+
   $('#sync_now').on('click', function() {
     _gaq.push(['_trackEvent', 'Popup', 'Manual Refresh']);
     chrome.extension.sendMessage({method: 'events.feed.fetch'},
