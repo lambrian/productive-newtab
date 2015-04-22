@@ -349,6 +349,8 @@ browseraction.createEventDiv_ = function(event) {
       .addClass('event')
       .attr({'data-url': event.gcal_url}));
 
+
+
   if (!start) {  // Some events detected via microformats are malformed.
     return eventDiv;
   }
@@ -358,6 +360,8 @@ browseraction.createEventDiv_ = function(event) {
   var spansMultipleDays = (end.diff(start, 'seconds') > 86400);
   if (event.allday) {
     eventDiv.addClass('all-day');
+  } else {
+    eventDiv.css({'height': end.diff(start, 'minutes')});
   }
   if (isDetectedEvent) {
     eventDiv.addClass('detected-event');
@@ -410,6 +414,7 @@ browseraction.createEventDiv_ = function(event) {
 
   // The location icon goes before the title because it floats right.
   var eventTitle = $('<div>').addClass('event-title').text(event.title);
+
   if (event.responseStatus == constants.EVENT_STATUS_DECLINED) {
     eventTitle.addClass('declined');
   }
