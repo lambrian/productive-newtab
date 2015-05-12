@@ -55,7 +55,7 @@ feeds.CALENDAR_EVENTS_API_URL_ =
  * @const
  * @private
  */
-feeds.DAYS_IN_AGENDA_ = 14;
+feeds.DAYS_IN_AGENDA_ = 1;
 
 /**
  * All events from visible calendars obtained during the last fetch.
@@ -294,8 +294,9 @@ feeds.fetchEvents = function() {
 feeds.fetchEventsFromCalendar_ = function(feed, callback) {
   background.log('feeds.fetchEventsFromCalendar_()', feed.title);
 
-  var fromDate = moment();
-  var toDate = moment().add('days', feeds.DAYS_IN_AGENDA_);
+  var fromDate = moment().startOf('day');
+  var toDate = moment().startOf('day').add('days', feeds.DAYS_IN_AGENDA_);
+  console.log(fromDate, toDate);
 
   var feedUrl = feeds.CALENDAR_EVENTS_API_URL_.replace('{calendarId}', encodeURIComponent(feed.id)) + ([
     'timeMin=' + encodeURIComponent(fromDate.toISOString()),
