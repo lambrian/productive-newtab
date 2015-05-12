@@ -44,9 +44,27 @@ browseraction.initialize = function() {
   browseraction.listenForRequests_();
   versioning.checkVersion();
   browseraction.showDetectedEvents_();
+ 
   chrome.extension.sendMessage({method: 'events.feed.get'},
       browseraction.showEventsFromFeed_);
+   
 };
+
+browseraction.showCurrentTimeNeedle_ = function() {
+  debugger;
+  var calStart = moment().startOf('day').hours(9);
+  var calEnd = moment().startOf('day').hours(20);
+  var totalDisplayDuration = calEnd.hour() - calStart.hour();
+
+  var now = moment();
+  var needle = $('<div>').addClass('needle');
+  needle.css({'top': now.diff(calStart, 'hours', true) / totalDisplayDuration * 100 + "%"});
+  needle.appendTo($('#event-list'));
+
+  console.log($('#event-list'));
+  console.log($('.needle'));
+
+}
 
 
 /**
@@ -280,7 +298,7 @@ browseraction.showDetectedEvents_ = function() {
  */
 browseraction.showEventsFromFeed_ = function(events) {
   chrome.extension.getBackgroundPage().background.log('browseraction.showEventsFromFeed_()');
-  $('#calendar-events').empty();
+  //$('#calendar-events').empty();
 
   chrome.identity.getAuthToken({'interactive': false}, function (authToken) {
     if (chrome.runtime.lastError || !authToken) {
@@ -295,6 +313,8 @@ browseraction.showEventsFromFeed_ = function(events) {
       $('#error').hide();
       $('#action-bar').show();
       $('#calendar-events').show();
+      browseraction.showCurrentTimeNeedle_();
+
     }
   });
 
@@ -424,7 +444,7 @@ browseraction.createEventDiv_ = function(event) {
     })).appendTo(eventDetails);
   }
   */
-  
+
   // The location icon goes before the title because it floats right.
   var eventTitle = $('<div>').addClass('event-title').text(event.title);
   if (event.responseStatus == constants.EVENT_STATUS_DECLINED) {
