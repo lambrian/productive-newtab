@@ -306,12 +306,17 @@ browseraction.showEventsFromFeed_ = function(events) {
       .text(headerDate.format('dddd, MMMM D'))
       .appendTo($('#calendar-events'));
 
+  var eventList = $('<div>');
+  eventList.attr('id', 'event-list');
+  eventList.addClass('event-list');
+  eventList.appendTo($('#calendar-events'));
+
   // If there are no events today, then avoid showing an empty date section.
   if (events.length == 0 ||
       moment(events[0].start).diff(headerDate, 'hours') > 23) {
     $('<div>').addClass('no-events-today')
         .append(chrome.i18n.getMessage('no_events_today'))
-        .appendTo($('#calendar-events'));
+        .appendTo($('#event-list'));
   }
 
   for (var i = 0; i < events.length; i++) {
@@ -326,10 +331,10 @@ browseraction.showEventsFromFeed_ = function(events) {
       headerDate = startDate;
       $('<div>').addClass('date-header')
           .text(headerDate.format('dddd, MMMM D'))
-          .appendTo($('#calendar-events'));
+          .appendTo($('#event-list'));
     }
 
-    browseraction.createEventDiv_(event).appendTo($('#calendar-events'));
+    browseraction.createEventDiv_(event).appendTo($('#event-list'));
   }
 };
 
