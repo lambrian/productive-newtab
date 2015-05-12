@@ -350,6 +350,10 @@ browseraction.createEventDiv_ = function(event) {
   var end = utils.fromIso8601(event.end);
   var now = moment().valueOf();
 
+  var calStart = moment().startOf('day').hours(9);
+  var calEnd = moment().startOf('day').hours(20);
+  var totalDisplayDuration = calEnd.hour() - calStart.hour();
+
   var eventDiv = /** @type {jQuery} */ ($('<div>')
       .addClass('event')
       .attr({'data-url': event.gcal_url}));
@@ -363,6 +367,12 @@ browseraction.createEventDiv_ = function(event) {
   var spansMultipleDays = (end.diff(start, 'seconds') > 86400);
   if (event.allday) {
     eventDiv.addClass('all-day');
+  } else {
+    // set height and offset from day start
+    var duration = end.diff(start, 'hours', true);
+    eventDiv.height((duration / totalDisplayDuration) * $('#event-list').height());
+
+    eventDiv.css({'top': start.diff(calStart, 'hours', true) / totalDisplayDuration * 100 + "%"});
   }
   if (isDetectedEvent) {
     eventDiv.addClass('detected-event');
@@ -396,6 +406,7 @@ browseraction.createEventDiv_ = function(event) {
       .addClass('event-details')
       .appendTo(eventDiv);
 
+  /*
   if (event.hangout_url) {
     $('<a>').attr({
       'href': event.hangout_url,
@@ -412,13 +423,15 @@ browseraction.createEventDiv_ = function(event) {
       'src': chrome.extension.getURL('icons/ic_action_place.png')
     })).appendTo(eventDetails);
   }
-
+  */
+  
   // The location icon goes before the title because it floats right.
   var eventTitle = $('<div>').addClass('event-title').text(event.title);
   if (event.responseStatus == constants.EVENT_STATUS_DECLINED) {
     eventTitle.addClass('declined');
   }
   eventTitle.appendTo(eventDetails);
+
 
   if (event.allday && spansMultipleDays || isDetectedEvent) {
     $('<div>')

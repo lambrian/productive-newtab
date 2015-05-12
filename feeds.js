@@ -296,7 +296,6 @@ feeds.fetchEventsFromCalendar_ = function(feed, callback) {
 
   var fromDate = moment().startOf('day');
   var toDate = moment().startOf('day').add('days', feeds.DAYS_IN_AGENDA_);
-  console.log(fromDate, toDate);
 
   var feedUrl = feeds.CALENDAR_EVENTS_API_URL_.replace('{calendarId}', encodeURIComponent(feed.id)) + ([
     'timeMin=' + encodeURIComponent(fromDate.toISOString()),
@@ -354,6 +353,7 @@ feeds.fetchEventsFromCalendar_ = function(feed, callback) {
               responseStatus: responseStatus
             });
           }
+          console.log(events);
           callback(events);
         };
       })(feed),
@@ -389,8 +389,8 @@ feeds.refreshUI = function() {
     }
   });
 
-  feeds.removePastEvents_();
-  feeds.determineNextEvents_();
+  //feeds.removePastEvents_();
+  //feeds.determineNextEvents_();
 
   // If there are no more next events to show, bail out.
   if (feeds.nextEvents.length === 0) {

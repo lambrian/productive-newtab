@@ -160,7 +160,8 @@ h2 {
 .event-list
 {
   height: 650px;
-  border: 1px solid blue;
+  border-left: 1px solid #111111;
+  overflow: scroll;
 }
 
 .event {
