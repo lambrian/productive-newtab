@@ -30,6 +30,10 @@ var browseraction = {};
  */
 browseraction.QUICK_ADD_API_URL_ = 'https://www.googleapis.com/calendar/v3/calendars/{calendarId}/events/quickAdd';
 
+browseraction.CAL_START = 6;
+browseraction.CAL_END = 23;
+browseraction.HOUR_HEIGHT = 45;
+
 /**
  * Initializes UI elements in the browser action popup.
  */
@@ -51,9 +55,8 @@ browseraction.initialize = function() {
 };
 
 browseraction.showCurrentTimeNeedle_ = function() {
-  debugger;
-  var calStart = moment().startOf('day').hours(9);
-  var calEnd = moment().startOf('day').hours(20);
+  var calStart = moment().startOf('day').hours(browseraction.CAL_START);
+  var calEnd = moment().startOf('day').hours(browseraction.CAL_END);
   var totalDisplayDuration = calEnd.hour() - calStart.hour();
 
   var now = moment();
@@ -61,8 +64,7 @@ browseraction.showCurrentTimeNeedle_ = function() {
   needle.css({'top': now.diff(calStart, 'hours', true) / totalDisplayDuration * 100 + "%"});
   needle.appendTo($('#event-list'));
 
-  console.log($('#event-list'));
-  console.log($('.needle'));
+  $('<div>').addClass('needle-bg').appendTo(needle);
 
 }
 
@@ -331,6 +333,11 @@ browseraction.showEventsFromFeed_ = function(events) {
   eventList.addClass('event-list');
   eventList.appendTo($('#calendar-events'));
 
+  var eventListBG = $('<div>');
+  eventListBG.addClass('event-list-bg');
+  eventListBG.css({'background': 'url("icons/background-hour.png"'});
+  eventListBG.appendTo($('#event-list'));
+
   // If there are no events today, then avoid showing an empty date section.
   if (events.length == 0 ||
       moment(events[0].start).diff(headerDate, 'hours') > 23) {
@@ -370,8 +377,8 @@ browseraction.createEventDiv_ = function(event) {
   var end = utils.fromIso8601(event.end);
   var now = moment().valueOf();
 
-  var calStart = moment().startOf('day').hours(9);
-  var calEnd = moment().startOf('day').hours(20);
+  var calStart = moment().startOf('day').hours(browseraction.CAL_START);
+  var calEnd = moment().startOf('day').hours(browseraction.CAL_END);
   var totalDisplayDuration = calEnd.hour() - calStart.hour();
 
   var eventDiv = /** @type {jQuery} */ ($('<div>')
@@ -390,9 +397,9 @@ browseraction.createEventDiv_ = function(event) {
   } else {
     // set height and offset from day start
     var duration = end.diff(start, 'hours', true);
-    eventDiv.height((duration / totalDisplayDuration) * $('#event-list').height());
+    eventDiv.height(duration * browseraction.HOUR_HEIGHT);
 
-    eventDiv.css({'top': start.diff(calStart, 'hours', true) / totalDisplayDuration * 100 + "%"});
+    eventDiv.css({'top': start.diff(calStart, 'hours', true) * browseraction.HOUR_HEIGHT + "px"});
   }
   if (isDetectedEvent) {
     eventDiv.addClass('detected-event');
