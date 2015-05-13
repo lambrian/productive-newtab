@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Roboto, Arial, sans-serif;
 }
 
 body {
@@ -184,9 +184,14 @@ h2 {
 
 .event-list-bg
 {
-  background: url('icons/background-hour.png');
   opacity: 0.3;
   height: 1080px;
+}
+
+.hour-tick
+{
+  height: 60px;
+  border-bottom: 1px solid black;
 }
 
 .event {
@@ -203,7 +208,7 @@ h2 {
 
 .start-time {
   color: #fff;
-  flex: 0 0 66px;
+  flex: 0 0 0px;
   font-size: 12px;
   overflow: hidden;
   text-align: right;
@@ -234,7 +239,12 @@ h2 {
 .start-time,
 .event-details {
   margin: 0;
-  padding: 6px;
+  padding: 1px;
+}
+
+.event-title, .event-start-time
+{
+  padding: 4px 0 0 2px;
 }
 
 .event-title {

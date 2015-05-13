@@ -32,7 +32,7 @@ browseraction.QUICK_ADD_API_URL_ = 'https://www.googleapis.com/calendar/v3/calen
 
 browseraction.CAL_START = 6;
 browseraction.CAL_END = 23;
-browseraction.HOUR_HEIGHT = 45;
+browseraction.HOUR_HEIGHT = 60;
 
 /**
  * Initializes UI elements in the browser action popup.
@@ -47,7 +47,6 @@ browseraction.initialize = function() {
   browseraction.loadCalendarsIntoQuickAdd_();
   browseraction.listenForRequests_();
   versioning.checkVersion();
-  browseraction.showDetectedEvents_();
  
   chrome.extension.sendMessage({method: 'events.feed.get'},
       browseraction.showEventsFromFeed_);
@@ -272,27 +271,6 @@ browseraction.createQuickAddEvent_ = function(text, calendarId) {
 
 
 /**
- * Shows events detected on the current page (by one of the parsers) in a list
- * inside the browser action popup.
- * @private
- */
-browseraction.showDetectedEvents_ = function() {
-  chrome.extension.sendMessage({method: 'events.detected.get'}, function(eventsFromPage) {
-    // Pick a layout based on how many events we have to show: 0, 1, or >1.
-    if (eventsFromPage && eventsFromPage.length > 0) {
-      $('<div>').addClass('date-header')
-          .text(chrome.i18n.getMessage('events_on_this_page'))
-          .appendTo($('#detected-events'));
-      $.each(eventsFromPage, function(i, event) {
-        browseraction.createEventDiv_(event).appendTo($('#detected-events'));
-      });
-      $('#add-events').click();
-    }
-  });
-};
-
-
-/**
  * Retrieves events from the calendar feed, sorted by start time, and displays
  * them in the browser action popup.
  * @param {Array} events The events to display.
@@ -335,8 +313,11 @@ browseraction.showEventsFromFeed_ = function(events) {
 
   var eventListBG = $('<div>');
   eventListBG.addClass('event-list-bg');
-  eventListBG.css({'background': 'url("icons/background-hour.png"'});
   eventListBG.appendTo($('#event-list'));
+
+  for (var i = 0; i < (browseraction.CAL_END - browseraction.CAL_START); i++ ){
+    $('<div>').addClass('hour-tick').appendTo(eventListBG);
+  }
 
   // If there are no events today, then avoid showing an empty date section.
   if (events.length == 0 ||
@@ -364,6 +345,13 @@ browseraction.showEventsFromFeed_ = function(events) {
     browseraction.createEventDiv_(event).appendTo($('#event-list'));
   }
 };
+
+browseraction.hexToRGB = function(hex) {
+    var r = parseInt(hex.substring(1,3), 16);
+    var g = parseInt(hex.substring(3,5), 16);
+    var b = parseInt(hex.substring(5,7), 16);
+    return {'r':r, 'g':g, 'b': b};
+}
 
 
 /**
@@ -433,6 +421,10 @@ browseraction.createEventDiv_ = function(event) {
       .addClass('event-details')
       .appendTo(eventDiv);
 
+  var rgb = browseraction.hexToRGB(event.feed.backgroundColor);
+  eventDetails.css({'background-color': 'rgba(' + rgb['r'] + ', ' + rgb['g'] + ', ' + rgb['b'] + ', 0.4',
+                    'color': 'rgb(' + (rgb['r'] - 100) + ', ' + (rgb['g'] - 100) + ', ' + (rgb['b'] - 100) + ')'});
+
   /*
   if (event.hangout_url) {
     $('<a>').attr({
@@ -458,6 +450,8 @@ browseraction.createEventDiv_ = function(event) {
     eventTitle.addClass('declined');
   }
   eventTitle.appendTo(eventDetails);
+
+  $('<div>').addClass('event-start-time').text(start.format(dateTimeFormat)).appendTo(eventDetails);
 
 
   if (event.allday && spansMultipleDays || isDetectedEvent) {
