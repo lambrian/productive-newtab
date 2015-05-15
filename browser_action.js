@@ -30,7 +30,7 @@ var browseraction = {};
  */
 browseraction.QUICK_ADD_API_URL_ = 'https://www.googleapis.com/calendar/v3/calendars/{calendarId}/events/quickAdd';
 
-browseraction.CAL_START = 6;
+browseraction.CAL_START = 0;
 browseraction.CAL_END = 23;
 browseraction.HOUR_HEIGHT = 60;
 
@@ -60,7 +60,7 @@ browseraction.showCurrentTimeNeedle_ = function() {
 
   var now = moment();
   var needle = $('<div>').addClass('needle');
-  needle.css({'top': now.diff(calStart, 'hours', true) / totalDisplayDuration * 100 + "%"});
+  needle.css({'top': now.diff(calStart, 'hours', true) * browseraction.HOUR_HEIGHT});
   needle.appendTo($('#event-list'));
 
   $('<div>').addClass('needle-bg').appendTo(needle);
@@ -385,7 +385,7 @@ browseraction.createEventDiv_ = function(event) {
   } else {
     // set height and offset from day start
     var duration = end.diff(start, 'hours', true);
-    eventDiv.height(duration * browseraction.HOUR_HEIGHT);
+    eventDiv.height(duration * browseraction.HOUR_HEIGHT * 0.95);
 
     eventDiv.css({'top': start.diff(calStart, 'hours', true) * browseraction.HOUR_HEIGHT + "px"});
   }
@@ -413,7 +413,6 @@ browseraction.createEventDiv_ = function(event) {
     startTimeDiv.css({'background-color': event.feed.backgroundColor});
   }
   if (!event.allday && !isDetectedEvent) {
-    startTimeDiv.text(start.format(dateTimeFormat));
   }
   startTimeDiv.appendTo(eventDiv);
 
