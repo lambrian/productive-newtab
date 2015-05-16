@@ -327,6 +327,7 @@ browseraction.showEventsFromFeed_ = function(events) {
         .appendTo($('#event-list'));
   }
 
+  var eventDivs = [];
   for (var i = 0; i < events.length; i++) {
     var event = events[i];
     var start = utils.fromIso8601(event.start);
@@ -342,7 +343,27 @@ browseraction.showEventsFromFeed_ = function(events) {
           .appendTo($('#event-list'));
     }
 
-    browseraction.createEventDiv_(event).appendTo($('#event-list'));
+    var eventDiv = browseraction.createEventDiv_(event);
+    eventDiv.appendTo($('#event-list'));
+    eventDivs.push(eventDiv);
+  }
+
+  for (var i = 0; i < events.length; i++) {
+      var prev = events[i-1];
+      var curr = events[i];
+      
+      if (prev != null) {
+          var start = utils.fromIso8601(curr.start);
+          var end = utils.fromIso8601(prev.end);
+          if (end.isAfter(start)) {
+             eventDivs[i-1].css({'width': '80%'});
+             
+             var alignment = (eventDivs[i-1].position().left == 0) ? 'right' : 'left';
+             eventDivs[i].css('width', '80%');
+             eventDivs[i].css(alignment, 0);
+          }
+      }
+          
   }
 };
 
