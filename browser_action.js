@@ -319,14 +319,6 @@ browseraction.showEventsFromFeed_ = function(events) {
     $('<div>').addClass('hour-tick').appendTo(eventListBG);
   }
 
-  // If there are no events today, then avoid showing an empty date section.
-  if (events.length == 0 ||
-      moment(events[0].start).diff(headerDate, 'hours') > 23) {
-    $('<div>').addClass('no-events-today')
-        .append(chrome.i18n.getMessage('no_events_today'))
-        .appendTo($('#event-list'));
-  }
-
   var eventDivs = [];
   for (var i = 0; i < events.length; i++) {
     var event = events[i];
