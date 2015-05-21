@@ -64,6 +64,7 @@ browseraction.showCurrentTimeNeedle_ = function() {
   needle.appendTo($('#event-list'));
 
   $('<div>').addClass('needle-bg').appendTo(needle);
+  $("#calendar-view").scrollTop($("#calendar-view").scrollTop() + $(".needle").position().top - browseraction.HOUR_HEIGHT);
 
 }
 
@@ -344,7 +345,7 @@ browseraction.showEventsFromFeed_ = function(events) {
       var prev = events[i-1];
       var curr = events[i];
       
-      if (prev != null) {
+      if (prev != undefined && !prev.allday) {
           var start = utils.fromIso8601(curr.start);
           var end = utils.fromIso8601(prev.end);
           if (end.isAfter(start)) {
@@ -357,6 +358,8 @@ browseraction.showEventsFromFeed_ = function(events) {
       }
           
   }
+
+
 };
 
 browseraction.hexToRGB = function(hex) {
@@ -395,6 +398,7 @@ browseraction.createEventDiv_ = function(event) {
   var spansMultipleDays = (end.diff(start, 'seconds') > 86400);
   if (event.allday) {
     eventDiv.addClass('all-day');
+    eventDiv.css('top', 0);
   } else {
     // set height and offset from day start
     var duration = end.diff(start, 'hours', true);
