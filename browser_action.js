@@ -60,12 +60,15 @@ browseraction.showCurrentTimeNeedle_ = function() {
 
   var now = moment();
   var needle = $('<div>').addClass('needle');
-  needle.css({'top': now.diff(calStart, 'hours', true) * browseraction.HOUR_HEIGHT});
   needle.appendTo($('#event-list'));
-
   $('<div>').addClass('needle-bg').appendTo(needle);
-  $("#calendar-view").scrollTop($("#calendar-view").scrollTop() + $(".needle").position().top - browseraction.HOUR_HEIGHT);
 
+  var updateNeedlePosition = function() {
+      needle.css({'top': now.diff(calStart, 'hours', true) * browseraction.HOUR_HEIGHT});
+      $("#calendar-view").scrollTop($("#calendar-view").scrollTop() + $(".needle").position().top - browseraction.HOUR_HEIGHT);
+  };
+  updateNeedlePosition();
+  setInterval(updateNeedlePosition, 5 * 1000);
 }
 
 
