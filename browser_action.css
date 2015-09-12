@@ -13,6 +13,16 @@ body {
   margin: 0;
 }
 
+@media screen and (max-width: 1125px) {
+    #calendar-view {
+        display: none;
+    }
+
+    #todoist-view {
+        width: 100%;
+    }
+}
+
 #calendar-view
 {
   position: absolute;
@@ -26,7 +36,7 @@ body {
 #todoist-view
 {
   position: absolute;
-  width: 70%;
+  min-width: 70%;
   height: 100%;
   border: none;
 }
